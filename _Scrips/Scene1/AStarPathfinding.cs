@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[DefaultExecutionOrder(0)]
 public class AStarPathfinding : MonoBehaviour
 {
+    [Header("Path Preview")]
+    public GameObject pathEffectPrefab;
+
     public static AStarPathfinding Instance;
 
     [Header("References")]
@@ -27,15 +31,88 @@ public class AStarPathfinding : MonoBehaviour
 
     private void Start()
     {
-        monster = GetNodeFromWorldPos(monsterGameObject.transform.position);
-        player = GetNodeFromWorldPos(playerGameObject.transform.position);
-
-        if (FindPath())
-            StartCoroutine(MoveMonster());
+        StartCoroutine(WaitUntilGridIsReady());
+    }
+    public void UpdatePath()
+    {
+        StopAllCoroutines(); // Dừng các coroutine cũ
+        StartCoroutine(RecalculatePath());
     }
 
-    public bool FindPath()
+    IEnumerator RecalculatePath()
     {
+        player = GetNodeFromWorldPos(playerGameObject.transform.position);
+        monster = GetNodeFromWorldPos(monsterGameObject.transform.position);
+
+        if (player == null || monster == null)
+        {
+            Debug.LogError("❌ Không tìm được node player hoặc monster");
+            yield break;
+        }
+
+        StartCoroutine(FindPathCoroutine());
+
+    }
+
+    IEnumerator WaitUntilGridIsReady()
+    {
+        while (gridManager.grid == null || gridManager.grid.Length == 0)
+            yield return null;
+
+        player = GetNodeFromWorldPos(playerGameObject.transform.position);
+        monster = GetNodeFromWorldPos(monsterGameObject.transform.position);
+
+        if (player == null || monster == null)
+        {
+            Debug.LogError("❌ Player hoặc Monster node là null. Kiểm tra vị trí hoặc GridManager.");
+            yield break;
+        }
+
+        StartCoroutine(FindPathCoroutine());
+
+    }
+
+    IEnumerator ShowPathWithAnimation()
+    {
+        CleanupPathEffects();
+
+        foreach (Node node in resultPath)
+        {
+            if (pathEffectPrefab != null)
+            {
+                GameObject effect = Instantiate(pathEffectPrefab, node.transform.position, Quaternion.identity);
+                effect.tag = "PathEffect";
+            }
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(MoveMonster());
+    }
+
+    IEnumerator MoveMonster()
+    {
+        foreach (Node node in resultPath)
+        {
+            monsterGameObject.transform.position = node.transform.position;
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        CleanupPathEffects();
+    }
+
+    void CleanupPathEffects()
+    {
+        foreach (GameObject dot in GameObject.FindGameObjectsWithTag("PathEffect"))
+        {
+            Destroy(dot);
+        }
+    }
+
+    public IEnumerator FindPathCoroutine()
+    {
+        ResetGridVisuals();
+
         frontierNodes.Clear();
         exploredNodes.Clear();
         resultPath.Clear();
@@ -48,7 +125,7 @@ public class AStarPathfinding : MonoBehaviour
         if (monster == player)
         {
             Debug.Log("Monster is already at the player.");
-            return true;
+            yield break;
         }
 
         while (frontierNodes.Count > 0)
@@ -57,24 +134,27 @@ public class AStarPathfinding : MonoBehaviour
             if (currentNode == null)
             {
                 Debug.Log("No path found.");
-                return false;
+                yield break;
             }
 
             if (IsNodeTarget(currentNode))
             {
                 BuildPath();
-                return true;
+                StartCoroutine(ShowPathWithAnimation());
+                yield break;
             }
 
             if (AddExplored(currentNode))
             {
+                currentNode.SetExploredVisual(Color.cyan); // tô màu node duyệt qua
+                yield return new WaitForSeconds(0.03f);     // delay giữa các node
                 AddNeighborsFrontier(currentNode);
             }
         }
 
         Debug.Log("Path not found.");
-        return false;
     }
+
 
     Node BestNodeCostFrontier()
     {
@@ -115,6 +195,8 @@ public class AStarPathfinding : MonoBehaviour
 
         exploredNodes.Add(node);
         frontierNodes.Remove(node);
+
+        node.SetExploredVisual(Color.cyan); // hoặc Color.gray, tùy bạn
         return true;
     }
 
@@ -130,19 +212,21 @@ public class AStarPathfinding : MonoBehaviour
 
     public Node GetNodeFromWorldPos(Vector3 pos)
     {
-        int x = Mathf.RoundToInt(pos.x);
-        int y = Mathf.RoundToInt(pos.y);
+        float spacing = gridManager.spacing;
+        int x = Mathf.RoundToInt(pos.x / spacing);
+        int y = Mathf.RoundToInt(pos.y / spacing);
+
         if (x >= 0 && y >= 0 && x < gridManager.width && y < gridManager.height)
             return gridManager.grid[x, y];
+
         return null;
     }
-
-    IEnumerator MoveMonster()
+    void ResetGridVisuals()
     {
-        foreach (Node node in resultPath)
+        foreach (var node in gridManager.grid)
         {
-            monsterGameObject.transform.position = node.transform.position;
-            yield return new WaitForSeconds(0.2f);
+            if (node != null)
+                node.ResetVisual();
         }
     }
 }
