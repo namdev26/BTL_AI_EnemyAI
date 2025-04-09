@@ -177,15 +177,18 @@ public class AStarPathfinding : MonoBehaviour
             {
                 neighbor.parent = node;
                 neighbor.gCost = tentativeG;
+                neighbor.hCost = Vector2.Distance(neighbor.transform.position, player.transform.position); // tính hCost
                 frontierNodes.Add(neighbor);
             }
             else if (tentativeG < neighbor.gCost)
             {
                 neighbor.parent = node;
                 neighbor.gCost = tentativeG;
+                // không cần gán lại hCost vì vị trí player không đổi
             }
         }
     }
+
 
     bool IsNodeTarget(Node node) => node == player;
 

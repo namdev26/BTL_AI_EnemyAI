@@ -17,7 +17,7 @@ public class Node : MonoBehaviour
     public bool isObstacle = false;
     public Color originalColor = Color.white;
 
-    [SerializeField] private NodeVisual visual;
+    private NodeVisual visual;
 
     private void Awake()
     {

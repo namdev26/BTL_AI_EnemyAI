@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1775943720611199407}
   - component: {fileID: 8753983600574048336}
   - component: {fileID: 8251172162781512291}
-  - component: {fileID: 5600505549242338802}
   m_Layer: 0
   m_Name: Node
   m_TagString: Untagged
@@ -106,16 +105,3 @@ MonoBehaviour:
   neighbors: []
   isObstacle: 0
   originalColor: {r: 1, g: 1, b: 1, a: 1}
-  visual: {fileID: 0}
---- !u!114 &5600505549242338802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1782922832318253330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b1d8a57c16dccd40bc5832ab6ce5966, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
