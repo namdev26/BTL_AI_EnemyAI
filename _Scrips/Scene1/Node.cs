@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using System.Xml.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Node : MonoBehaviour
@@ -25,6 +24,7 @@ public class Node : MonoBehaviour
         visual?.Init(originalColor);
     }
 
+    // Khởi tạo thông tin cho node
     public void Init(Vector3Int gridPosition)
     {
         gridX = gridPosition.x;
@@ -33,12 +33,14 @@ public class Node : MonoBehaviour
         UpdateColor();
     }
 
+    // Kích hoạt bằng chuột khi đánh dấu ô không thể đi qua và ngược lại hủy
     public void ToggleObstacle()
     {
         isObstacle = !isObstacle;
         UpdateColor();
     }
 
+    // Cập nhật màu ô cản
     public void UpdateColor()
     {
         if (visual == null) visual = GetComponent<NodeVisual>();
@@ -48,12 +50,15 @@ public class Node : MonoBehaviour
             visual?.SetColor(originalColor);
     }
 
+    // Reset màu all
     public void ResetVisual()
     {
         if (!isObstacle)
             visual?.ResetVisual(originalColor);
     }
 
+
+    //Set màu
     public void SetExploredVisual(Color color)
     {
         visual?.SetColor(color);

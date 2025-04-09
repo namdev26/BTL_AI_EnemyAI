@@ -11,19 +11,15 @@ public class GridManager : MonoBehaviour
 
     void Start()
     {
-        GenerateGrid();
-        AssignNeighbors();
+        GenerateGrid(); // khởi tạo gird
+        AssignNeighbors(); // tìm các node lân cận
         CenterCameraOnGrid();
     }
 
     void GenerateGrid()
     {
         grid = new Node[width, height];
-
-        // Center the grid around (0, 0)
         Vector3 origin = Vector3.zero;
-
-
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -49,10 +45,10 @@ public class GridManager : MonoBehaviour
                 Node node = grid[x, y];
                 node.neighbors.Clear();
 
-                TryAddNeighbor(node, x - 1, y); // Left
-                TryAddNeighbor(node, x + 1, y); // Right
-                TryAddNeighbor(node, x, y + 1); // Up
-                TryAddNeighbor(node, x, y - 1); // Down
+                TryAddNeighbor(node, x - 1, y); // Trái
+                TryAddNeighbor(node, x + 1, y); // Phải
+                TryAddNeighbor(node, x, y + 1); // Trên
+                TryAddNeighbor(node, x, y - 1); // Dưới
             }
         }
     }
@@ -74,33 +70,17 @@ public class GridManager : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null) return;
 
-        // Tính toán vị trí trung tâm của grid
         float gridWidth = width * spacing;
         float gridHeight = height * spacing;
         Vector3 center = new Vector3((width - 1) * spacing / 2f, (height - 1) * spacing / 2f, -10f);
 
         cam.transform.position = center;
 
-        // Tính aspect ratio
         float aspect = (float)cam.pixelWidth / cam.pixelHeight;
 
-        // Tính toán kích thước camera sao cho bao trùm toàn bộ grid
         float sizeX = gridWidth / (2f * aspect);
         float sizeY = gridHeight / 2f;
 
-        cam.orthographicSize = Mathf.Max(sizeX, sizeY) + 0.5f; // Thêm chút padding
-    }
-
-
-    public Node GetNodeFromWorldPosition(Vector3 worldPos)
-    {
-        float spacing = this.spacing;
-        int x = Mathf.RoundToInt(worldPos.x / spacing);
-        int y = Mathf.RoundToInt(worldPos.y / spacing);
-
-        if (x >= 0 && y >= 0 && x < width && y < height)
-            return grid[x, y];
-
-        return null;
+        cam.orthographicSize = Mathf.Max(sizeX, sizeY) + 0.5f;
     }
 }
