@@ -74,16 +74,33 @@ public class GridManager : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null) return;
 
-        Vector3 centerPosition = new Vector3(0, 0, -10); // Z = -10 for 2D
-        cam.transform.position = centerPosition;
-
-        float aspectRatio = (float)cam.pixelWidth / cam.pixelHeight;
+        // Tính toán vị trí trung tâm của grid
         float gridWidth = width * spacing;
         float gridHeight = height * spacing;
+        Vector3 center = new Vector3((width - 1) * spacing / 2f, (height - 1) * spacing / 2f, -10f);
 
-        float sizeX = gridWidth / (2f * aspectRatio);
+        cam.transform.position = center;
+
+        // Tính aspect ratio
+        float aspect = (float)cam.pixelWidth / cam.pixelHeight;
+
+        // Tính toán kích thước camera sao cho bao trùm toàn bộ grid
+        float sizeX = gridWidth / (2f * aspect);
         float sizeY = gridHeight / 2f;
 
-        cam.orthographicSize = Mathf.Max(sizeX, sizeY) + 1f; // +1 for padding
+        cam.orthographicSize = Mathf.Max(sizeX, sizeY) + 0.5f; // Thêm chút padding
+    }
+
+
+    public Node GetNodeFromWorldPosition(Vector3 worldPos)
+    {
+        float spacing = this.spacing;
+        int x = Mathf.RoundToInt(worldPos.x / spacing);
+        int y = Mathf.RoundToInt(worldPos.y / spacing);
+
+        if (x >= 0 && y >= 0 && x < width && y < height)
+            return grid[x, y];
+
+        return null;
     }
 }

@@ -349,6 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8641bf6925ccd5741ba4e44e43f3a376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathEffectPrefab: {fileID: 0}
   monsterGameObject: {fileID: 1028156323}
   playerGameObject: {fileID: 1425577872}
   gridManager: {fileID: 1921690750}

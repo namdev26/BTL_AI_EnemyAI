@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 
 public class Node : MonoBehaviour
@@ -12,16 +13,16 @@ public class Node : MonoBehaviour
     [Header("Grid Info")]
     public int gridX;
     public int gridY;
-    public List<Node> neighbors = new List<Node>();
+    public List<Node> neighbors = new();
     public bool isObstacle = false;
     public Color originalColor = Color.white;
 
-    private SpriteRenderer sr;
+    [SerializeField] private NodeVisual visual;
 
     private void Awake()
     {
-        sr = GetComponent<SpriteRenderer>();
-        UpdateColor();
+        visual = GetComponent<NodeVisual>();
+        visual?.Init(originalColor);
     }
 
     public void Init(Vector3Int gridPosition)
@@ -40,25 +41,21 @@ public class Node : MonoBehaviour
 
     public void UpdateColor()
     {
-        if (sr == null) sr = GetComponent<SpriteRenderer>();
-        sr.color = isObstacle ? Color.black : Color.white;
+        if (visual == null) visual = GetComponent<NodeVisual>();
+        if (isObstacle)
+            visual?.SetAsObstacle();
+        else
+            visual?.SetColor(originalColor);
     }
 
     public void ResetVisual()
     {
         if (!isObstacle)
-            sr.color = originalColor;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = isObstacle ? Color.black : Color.green;
-        Gizmos.DrawCube(transform.position, Vector3.one * 0.9f);
+            visual?.ResetVisual(originalColor);
     }
 
     public void SetExploredVisual(Color color)
     {
-        GetComponent<SpriteRenderer>().color = color;
+        visual?.SetColor(color);
     }
-
 }
