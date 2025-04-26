@@ -65,9 +65,7 @@ public class AStarPathfinding : MonoBehaviour
             Debug.LogError("Player hoặc Monster node là null. Kiểm tra vị trí hoặc GridManager.");
             yield break;
         }
-
         StartCoroutine(FindPathCoroutine());
-
     }
 
     IEnumerator ShowPathWithAnimation()
@@ -129,6 +127,7 @@ public class AStarPathfinding : MonoBehaviour
         while (frontierNodes.Count > 0)
         {
             currentNode = BestNodeCostFrontier();
+            frontierNodes.Remove(currentNode);
             if (currentNode == null)
             {
                 Debug.Log("Không có đường đi.");
@@ -144,7 +143,7 @@ public class AStarPathfinding : MonoBehaviour
 
             if (AddExplored(currentNode))
             {
-                currentNode.SetExploredVisual(Color.cyan); // tô màu node duyệt qua
+                //currentNode.SetExploredVisual(Color.cyan); // tô màu node duyệt qua
                 yield return new WaitForSeconds(0.03f);     // delay giữa các node
                 AddNeighborsFrontier(currentNode);
             }
@@ -154,12 +153,17 @@ public class AStarPathfinding : MonoBehaviour
     }
 
 
-    Node BestNodeCostFrontier()
+    Node BestNodeCostFrontier(bool bestSpeed = false)
     {
         if (frontierNodes.Count <= 0) return null;
 
-        frontierNodes = frontierNodes.OrderBy(n => n.fCost).ThenBy(n => n.hCost).ToList();
-        return frontierNodes.First();
+        if (bestSpeed) return frontierNodes.OrderBy(node => node.hCost).First();
+        else
+        {
+            frontierNodes = frontierNodes.OrderBy(node => node.fCost).ToList();
+            return frontierNodes.Where(node => node.fCost == frontierNodes.First().fCost)
+                .OrderBy(node => node.hCost).First();
+        }
     }
 
     void AddNeighborsFrontier(Node node)
@@ -189,8 +193,6 @@ public class AStarPathfinding : MonoBehaviour
             }
         }
     }
-
-
 
     bool IsNodeTarget(Node node) => node == player;
 
