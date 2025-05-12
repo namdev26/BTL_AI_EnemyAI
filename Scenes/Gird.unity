@@ -152,9 +152,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodePrefab: {fileID: 1782922832318253330, guid: 37b6132dd03fa75449931da4764a3689, type: 3}
-  width: 10
-  height: 10
-  spacing: 1
+  width: 20
+  height: 20
+  spacing: 1.05
 --- !u!4 &95471921
 Transform:
   m_ObjectHideFlags: 0

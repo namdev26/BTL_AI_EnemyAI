@@ -253,6 +253,195 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: All free tiles_1
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 100
+        width: 25
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fdef834c36b0e54b8a99806b498ec78
+      internalID: -799489478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cay2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 208
+        width: 16
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fc90dfa67cef3f4c9f088cab04ecfa9
+      internalID: 626373520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: All free tiles_3
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 32
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5da3f7ba0c4718b4c8787c71436a69f7
+      internalID: -508729687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: All free tiles_4
+      rect:
+        serializedVersion: 2
+        x: 395
+        y: 104
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edbbbb12a85a7a847b5bcebf57f3b242
+      internalID: 1946860570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: All free tiles_5
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 224
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e9312c6dd15bff4bb1b31c9c87a6f1f
+      internalID: 421528250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: All free tiles_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 176
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 522e4cb0f43594742815ad33385f3a87
+      internalID: -176344249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: All free tiles_7
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db332a5287221c443b4d4df189339d1f
+      internalID: 1845539806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cay1
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 207
+        width: 16
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 1, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 451782b21b622b94580e16a127f81151
+      internalID: -658908010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: All free tiles_2
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5c6ac2d2f91cfa449121c050eec1dc8
+      internalID: 413793284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -265,8 +454,17 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       All free tiles_0: 200825488
+      All free tiles_1: -799489478
+      All free tiles_2: 413793284
+      All free tiles_3: -508729687
+      All free tiles_4: 1946860570
+      All free tiles_5: 421528250
+      All free tiles_6: -176344249
+      All free tiles_7: 1845539806
       Grass: -336147012
       bien: -742516630
+      cay1: -658908010
+      cay2: 626373520
       co: 1522743575
       duyet: 1343696507
   mipmapLimitGroupName: 

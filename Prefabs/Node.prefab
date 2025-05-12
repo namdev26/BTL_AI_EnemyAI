@@ -74,9 +74,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -5
+  m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0.45743948, g: 0.7830189, b: 0.09972411, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -105,7 +105,6 @@ MonoBehaviour:
   gridY: 0
   neighbors: []
   isObstacle: 0
-  originalColor: {r: 0.66505545, g: 0.8584906, b: 0.4251958, a: 1}
 --- !u!114 &-15481519252924819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,3 +117,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1d8a57c16dccd40bc5832ab6ce5966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundRenderer: {fileID: 0}
+  obstacleRenderer: {fileID: 0}
+  grassSprite: {fileID: -959281593, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
+  obstacleSprite: {fileID: 413793284, guid: d9a402b843d10ca42b01857e9fd37477, type: 3}
+  frontierSprite: {fileID: -1080661620, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
+  exploredSprite: {fileID: 1399736904, guid: 32fdae756e900fe4aab69abde97dd0ef, type: 3}

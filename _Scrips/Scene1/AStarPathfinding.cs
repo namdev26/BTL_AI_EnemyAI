@@ -94,7 +94,7 @@ public class AStarPathfinding : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
 
-        CleanupPathEffects();
+        //CleanupPathEffects();
     }
 
     void CleanupPathEffects()
@@ -183,7 +183,7 @@ public class AStarPathfinding : MonoBehaviour
                 frontierNodes.Add(neighbor);
 
                 // Tô màu node biên
-                neighbor.SetExploredVisual(Color.yellow);
+                neighbor.SetFrontierVisual();
             }
             else if (tentativeG < neighbor.gCost)
             {
@@ -203,7 +203,7 @@ public class AStarPathfinding : MonoBehaviour
         exploredNodes.Add(node);
         frontierNodes.Remove(node);
 
-        node.SetExploredVisual(Color.cyan);
+        node.SetExploredVisual();
         return true;
     }
 

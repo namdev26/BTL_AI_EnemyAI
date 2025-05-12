@@ -15,7 +15,7 @@ public class ObstaclePlacer : MonoBehaviour
             if (node != null)
             {
                 node.isObstacle = !node.isObstacle;
-                node.UpdateColor(); // Hàm này bạn dùng để đổi màu node
+                node.UpdateVisual(); // Hàm này bạn dùng để đổi màu node
             }
         }
     }
