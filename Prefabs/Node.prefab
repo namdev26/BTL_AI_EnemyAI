@@ -119,7 +119,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundRenderer: {fileID: 0}
   obstacleRenderer: {fileID: 0}
-  grassSprite: {fileID: -959281593, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
-  obstacleSprite: {fileID: 413793284, guid: d9a402b843d10ca42b01857e9fd37477, type: 3}
-  frontierSprite: {fileID: -1080661620, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
-  exploredSprite: {fileID: 1399736904, guid: 32fdae756e900fe4aab69abde97dd0ef, type: 3}
+  grassSprites:
+  - sprite: {fileID: -1676946326, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
+    probability: 0.01
+  - sprite: {fileID: 1355948256, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
+    probability: 0.01
+  - sprite: {fileID: -459954179, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
+    probability: 0.01
+  - sprite: {fileID: -959281593, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
+    probability: 0.8
+  - sprite: {fileID: -546623960, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
+    probability: 0.01
+  - sprite: {fileID: 1882973663, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
+    probability: 0.01
+  - sprite: {fileID: -872549694, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
+    probability: 0.01
+  - sprite: {fileID: 1510924476, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
+    probability: 0.02
+  - sprite: {fileID: 760059255, guid: 09e7dba34c9e2194db57de633e4d3d11, type: 3}
+    probability: 0.02
+  obstacleSprites:
+  - sprite: {fileID: 413793284, guid: d9a402b843d10ca42b01857e9fd37477, type: 3}
+    probability: 1
+  frontierSprites:
+  - sprite: {fileID: 209862694, guid: 32fdae756e900fe4aab69abde97dd0ef, type: 3}
+    probability: 1
+  exploredSprites:
+  - sprite: {fileID: -1377391354, guid: 32fdae756e900fe4aab69abde97dd0ef, type: 3}
+    probability: 0.01
+  - sprite: {fileID: 839196186, guid: 32fdae756e900fe4aab69abde97dd0ef, type: 3}
+    probability: 0.01
+  - sprite: {fileID: -196568649, guid: 32fdae756e900fe4aab69abde97dd0ef, type: 3}
+    probability: 0.01
+  - sprite: {fileID: 1399736904, guid: 32fdae756e900fe4aab69abde97dd0ef, type: 3}
+    probability: 0.8
+  - sprite: {fileID: 1812999757, guid: 32fdae756e900fe4aab69abde97dd0ef, type: 3}
+    probability: 0.01
+  - sprite: {fileID: 1801429155, guid: 32fdae756e900fe4aab69abde97dd0ef, type: 3}
+    probability: 0.01
+  - sprite: {fileID: 2036426345, guid: 32fdae756e900fe4aab69abde97dd0ef, type: 3}
+    probability: 0.01

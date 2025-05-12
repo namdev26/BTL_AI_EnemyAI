@@ -1,67 +1,102 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class NodeVisual : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer backgroundRenderer; // Renderer cho lớp nền cỏ
-    [SerializeField] private SpriteRenderer obstacleRenderer; // Renderer cho chướng ngại vật, frontier, explored
-    [SerializeField] private Sprite grassSprite; // Sprite cho cỏ
-    [SerializeField] private Sprite obstacleSprite; // Sprite cho chướng ngại vật
-    [SerializeField] private Sprite frontierSprite; // Sprite cho frontier nodes
-    [SerializeField] private Sprite exploredSprite; // Sprite cho explored nodes
+    [System.Serializable]
+    public class SpriteEntry
+    {
+        public Sprite sprite;
+        [Range(0f, 1f)]
+        public float probability = 1f;
+    }
+
+    [SerializeField] private SpriteRenderer backgroundRenderer; 
+    [SerializeField] private SpriteRenderer obstacleRenderer; 
+
+    [SerializeField] private List<SpriteEntry> grassSprites = new List<SpriteEntry>(); 
+    [SerializeField] private List<SpriteEntry> obstacleSprites = new List<SpriteEntry>(); 
+    [SerializeField] private List<SpriteEntry> frontierSprites = new List<SpriteEntry>(); 
+    [SerializeField] private List<SpriteEntry> exploredSprites = new List<SpriteEntry>(); 
+
     public void Init()
     {
-        // Khởi tạo lớp nền cỏ
         if (backgroundRenderer == null) backgroundRenderer = GetComponent<SpriteRenderer>();
-        if (backgroundRenderer != null && grassSprite != null)
+
+        if (backgroundRenderer != null && grassSprites.Count > 0)
         {
-            backgroundRenderer.sprite = grassSprite;
-            backgroundRenderer.sortingOrder = 0; // Đảm bảo lớp cỏ ở dưới
+            backgroundRenderer.sprite = GetRandomSpriteFromList(grassSprites);
+            backgroundRenderer.sortingOrder = 0;
         }
 
-        // Khởi tạo lớp chướng ngại vật/frontier/explored
         if (obstacleRenderer == null)
         {
             GameObject overlayObj = new GameObject("OverlayRenderer");
             overlayObj.transform.SetParent(transform, false);
             overlayObj.transform.localPosition = Vector3.zero;
             obstacleRenderer = overlayObj.AddComponent<SpriteRenderer>();
-            obstacleRenderer.sortingOrder = 1; // Đảm bảo lớp trên ở trên lớp cỏ
+            obstacleRenderer.sortingOrder = 1;
         }
 
-        // Ẩn lớp trên ban đầu
         SetOverlayVisible(false);
+    }
+
+    private Sprite GetRandomSpriteFromList(List<SpriteEntry> spriteList)
+    {
+        if (spriteList == null || spriteList.Count == 0)
+            return null;
+
+        float totalProbability = 0f;
+        foreach (var entry in spriteList)
+        {
+            totalProbability += entry.probability;
+        }
+
+        float randomValue = Random.Range(0f, totalProbability);
+        float cumulativeProbability = 0f;
+
+        foreach (var entry in spriteList)
+        {
+            cumulativeProbability += entry.probability;
+            if (randomValue <= cumulativeProbability)
+            {
+                return entry.sprite;
+            }
+        }
+
+        return spriteList[0].sprite;
     }
 
     public void SetAsObstacle()
     {
-        if (obstacleRenderer != null && obstacleSprite != null)
+        if (obstacleRenderer != null && obstacleSprites.Count > 0)
         {
-            obstacleRenderer.sprite = obstacleSprite;
-            obstacleRenderer.enabled = true; // Hiển thị chướng ngại vật
+            obstacleRenderer.sprite = GetRandomSpriteFromList(obstacleSprites);
+            obstacleRenderer.enabled = true;
         }
     }
 
     public void SetAsFrontier()
     {
-        if (obstacleRenderer != null && frontierSprite != null)
+        if (obstacleRenderer != null && frontierSprites.Count > 0)
         {
-            obstacleRenderer.sprite = frontierSprite;
-            obstacleRenderer.enabled = true; // Hiển thị frontier
+            obstacleRenderer.sprite = GetRandomSpriteFromList(frontierSprites);
+            obstacleRenderer.enabled = true; 
         }
     }
 
     public void SetAsExplored()
     {
-        if (obstacleRenderer != null && exploredSprite != null)
+        if (obstacleRenderer != null && exploredSprites.Count > 0)
         {
-            obstacleRenderer.sprite = exploredSprite;
-            obstacleRenderer.enabled = true; // Hiển thị explored
+            obstacleRenderer.sprite = GetRandomSpriteFromList(exploredSprites);
+            obstacleRenderer.enabled = true;
         }
     }
 
     public void ResetVisual()
     {
-        SetOverlayVisible(false); // Ẩn lớp trên, giữ lớp cỏ
+        SetOverlayVisible(false);
     }
 
     private void SetOverlayVisible(bool isVisible)
