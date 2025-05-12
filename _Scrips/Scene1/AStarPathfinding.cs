@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using UnityEngine;
-using System.Diagnostics; // Thêm vào để dùng Stopwatch
 
 [DefaultExecutionOrder(0)]
 public class AStarPathfinding : MonoBehaviour
@@ -16,26 +17,24 @@ public class AStarPathfinding : MonoBehaviour
     public GameObject monsterGameObject;
     public GameObject playerGameObject;
     public GridManager gridManager;
+    public HeuristicSelector heuristicSelector;
 
     [Header("Nodes")]
     public Node monster;
     public Node player;
     public Node currentNode;
-    public List<Node> resultPath = new List<Node>(); // lưu node kết quả đường đi
-    public List<Node> frontierNodes = new List<Node>(); // lưu các node trong hàng đợi
-    public List<Node> exploredNodes = new List<Node>(); // lưu các node đã duyệt
+    public List<Node> resultPath = new List<Node>();
+    public List<Node> frontierNodes = new List<Node>();
+    public List<Node> exploredNodes = new List<Node>();
 
-    [Header("Performance")]
-    public float lastPathfindingTime; // Thời gian tính bằng milliseconds
-    public int nodesExplored; // Số node đã khám phá
-    public int pathLength; // Độ dài đường đi tìm được
-
-    private Stopwatch stopwatch; // Đối tượng đo thời gian
+    // Sự kiện để thông báo trạng thái và lỗi
+    public event Action<int, int, int, string> OnStateUpdated; // frontier, explored, path, status
+    public event Action<long> OnPathFound; // thời gian thực hiện
+    public event Action<string> OnError;
 
     private void Awake()
     {
         Instance = this;
-        stopwatch = new Stopwatch(); // Khởi tạo stopwatch
     }
 
     private void Start()
@@ -45,7 +44,7 @@ public class AStarPathfinding : MonoBehaviour
 
     public void UpdatePath()
     {
-        StopAllCoroutines(); // Dừng các coroutine cũ
+        StopAllCoroutines();
         StartCoroutine(RecalculatePath());
     }
 
@@ -56,7 +55,7 @@ public class AStarPathfinding : MonoBehaviour
 
         if (player == null || monster == null)
         {
-            UnityEngine.Debug.Assert(player != null, "Player node là null. Kiểm tra vị trí hoặc GridManager.");
+            OnError?.Invoke("Không tìm được node player hoặc monster");
             yield break;
         }
         StartCoroutine(FindPathCoroutine());
@@ -72,7 +71,7 @@ public class AStarPathfinding : MonoBehaviour
 
         if (player == null || monster == null)
         {
-            UnityEngine.Debug.LogError("Player hoặc Monster node là null. Kiểm tra vị trí hoặc GridManager.");
+            OnError?.Invoke("Player hoặc Monster node là null. Kiểm tra vị trí hoặc GridManager.");
             yield break;
         }
         StartCoroutine(FindPathCoroutine());
@@ -80,7 +79,7 @@ public class AStarPathfinding : MonoBehaviour
 
     IEnumerator ShowPathWithAnimation()
     {
-        CleanupPathEffects(); // xóa dấu chân
+        CleanupPathEffects();
 
         foreach (Node node in resultPath)
         {
@@ -104,7 +103,7 @@ public class AStarPathfinding : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
 
-        //CleanupPathEffects();
+        CleanupPathEffects();
     }
 
     void CleanupPathEffects()
@@ -117,30 +116,28 @@ public class AStarPathfinding : MonoBehaviour
 
     public IEnumerator FindPathCoroutine()
     {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+
         ResetGridVisuals();
 
         frontierNodes.Clear();
         exploredNodes.Clear();
         resultPath.Clear();
 
-        // Bắt đầu đo thời gian
-        stopwatch.Reset();
-        stopwatch.Start();
-        nodesExplored = 0;
-
         monster.gCost = 0;
         monster.parent = null;
         currentNode = monster;
         frontierNodes.Add(monster);
 
+        // Thông báo trạng thái ban đầu
+        OnStateUpdated?.Invoke(frontierNodes.Count, exploredNodes.Count, resultPath.Count, "Bắt đầu tìm đường");
+
         if (monster == player)
         {
-            UnityEngine.Debug.Log("Quái vật và người chơi đang cùng 1 vị trí rồi.");
-            // Dừng đo thời gian và ghi nhận kết quả
+            OnStateUpdated?.Invoke(frontierNodes.Count, exploredNodes.Count, resultPath.Count, "Quái vật và người chơi đang cùng 1 vị trí rồi");
             stopwatch.Stop();
-            lastPathfindingTime = stopwatch.ElapsedMilliseconds;
-            pathLength = 0;
-            LogPathfindingStats();
+            OnPathFound?.Invoke(stopwatch.ElapsedMilliseconds);
             yield break;
         }
 
@@ -150,62 +147,33 @@ public class AStarPathfinding : MonoBehaviour
             frontierNodes.Remove(currentNode);
             if (currentNode == null)
             {
-                UnityEngine.Debug.Log("Không có đường đi.");
-                // Dừng đo thời gian và ghi nhận kết quả
+                OnStateUpdated?.Invoke(frontierNodes.Count, exploredNodes.Count, resultPath.Count, "Không có đường đi");
                 stopwatch.Stop();
-                lastPathfindingTime = stopwatch.ElapsedMilliseconds;
-                pathLength = 0;
-                LogPathfindingStats();
+                OnPathFound?.Invoke(stopwatch.ElapsedMilliseconds);
                 yield break;
             }
 
-            if (IsNodeTarget(currentNode)) // đã đến đích
+            if (IsNodeTarget(currentNode))
             {
                 BuildPath();
-                // Dừng đo thời gian và ghi nhận kết quả
                 stopwatch.Stop();
-                lastPathfindingTime = stopwatch.ElapsedMilliseconds;
-                pathLength = resultPath.Count;
-                LogPathfindingStats();
-
+                OnStateUpdated?.Invoke(frontierNodes.Count, exploredNodes.Count, resultPath.Count, "Đã tìm thấy đường đi!");
+                OnPathFound?.Invoke(stopwatch.ElapsedMilliseconds);
                 StartCoroutine(ShowPathWithAnimation());
                 yield break;
             }
 
             if (AddExplored(currentNode))
             {
-                //currentNode.SetExploredVisual(Color.cyan); // tô màu node duyệt qua
-                nodesExplored++;
-                yield return new WaitForSeconds(0.03f);     // delay giữa các node
+                yield return new WaitForSeconds(0.03f);
                 AddNeighborsFrontier(currentNode);
+                OnStateUpdated?.Invoke(frontierNodes.Count, exploredNodes.Count, resultPath.Count, $"Sau node {currentNode.name}");
             }
         }
 
-        // Nếu không tìm thấy đường đi
+        OnStateUpdated?.Invoke(frontierNodes.Count, exploredNodes.Count, resultPath.Count, "Không có đường đi");
         stopwatch.Stop();
-        lastPathfindingTime = stopwatch.ElapsedMilliseconds;
-        pathLength = 0;
-        LogPathfindingStats();
-        UnityEngine.Debug.Log("Không có đường đi.");
-    }
-
-    // Hàm in ra thông tin về thuật toán
-    void LogPathfindingStats()
-    {
-        string timeUnit = "ms";
-        float timeValue = lastPathfindingTime;
-
-        // Chuyển đổi đơn vị thời gian cho dễ đọc
-        if (timeValue >= 1000)
-        {
-            timeValue /= 1000f;
-            timeUnit = "giây";
-        }
-
-        UnityEngine.Debug.Log($"Kết quả thuật toán A*:" +
-                 $"\n- Thời gian thực thi: {timeValue:F3} {timeUnit}" +
-                 $"\n- Số node đã khám phá: {nodesExplored}" +
-                 $"\n- Độ dài đường đi: {pathLength} node");
+        OnPathFound?.Invoke(stopwatch.ElapsedMilliseconds);
     }
 
     Node BestNodeCostFrontier(bool bestSpeed = false)
@@ -223,9 +191,9 @@ public class AStarPathfinding : MonoBehaviour
 
     void AddNeighborsFrontier(Node node)
     {
-        foreach (var neighbor in node.neighbors) // duyệt các lớp hàng xóm với node hàng xóm hiện tại 
+        foreach (var neighbor in node.neighbors)
         {
-            if (neighbor.isObstacle || exploredNodes.Contains(neighbor)) // và đã duyệt rồi
+            if (neighbor.isObstacle || exploredNodes.Contains(neighbor))
                 continue;
 
             float tentativeG = node.gCost + Vector2.Distance(node.transform.position, neighbor.transform.position);
@@ -234,17 +202,14 @@ public class AStarPathfinding : MonoBehaviour
             {
                 neighbor.parent = node;
                 neighbor.gCost = tentativeG;
-                neighbor.hCost = Vector2.Distance(neighbor.transform.position, player.transform.position); // tính hCost
+                neighbor.hCost = heuristicSelector.CalculateHCost(neighbor.transform.position, player.transform.position);
                 frontierNodes.Add(neighbor);
-
-                // Tô màu node biên
                 neighbor.SetFrontierVisual();
             }
             else if (tentativeG < neighbor.gCost)
             {
                 neighbor.parent = node;
                 neighbor.gCost = tentativeG;
-                // không cần gán lại hCost vì vị trí player không đổi
             }
         }
     }
@@ -254,10 +219,8 @@ public class AStarPathfinding : MonoBehaviour
     bool AddExplored(Node node)
     {
         if (exploredNodes.Contains(node)) return false;
-
         exploredNodes.Add(node);
         frontierNodes.Remove(node);
-
         node.SetExploredVisual();
         return true;
     }
@@ -267,7 +230,7 @@ public class AStarPathfinding : MonoBehaviour
         Node node = player;
         while (node != null)
         {
-            resultPath.Insert(0, node); // đảo ngược đường đi từ player
+            resultPath.Insert(0, node);
             node = node.parent;
         }
     }
