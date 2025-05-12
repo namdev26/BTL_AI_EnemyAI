@@ -454,6 +454,9 @@ MonoBehaviour:
   resultPath: []
   frontierNodes: []
   exploredNodes: []
+  lastPathfindingTime: 0
+  nodesExplored: 0
+  pathLength: 0
 --- !u!4 &1731420699
 Transform:
   m_ObjectHideFlags: 0
