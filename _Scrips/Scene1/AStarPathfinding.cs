@@ -103,10 +103,10 @@ public class AStarPathfinding : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
 
-        CleanupPathEffects();
+        //CleanupPathEffects();
     }
 
-    void CleanupPathEffects()
+    public void CleanupPathEffects()
     {
         foreach (GameObject dot in GameObject.FindGameObjectsWithTag("PathEffect"))
         {
@@ -116,6 +116,7 @@ public class AStarPathfinding : MonoBehaviour
 
     public IEnumerator FindPathCoroutine()
     {
+        ResetNodeData();
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
 
@@ -130,7 +131,6 @@ public class AStarPathfinding : MonoBehaviour
         currentNode = monster;
         frontierNodes.Add(monster);
 
-        // Thông báo trạng thái ban đầu
         OnStateUpdated?.Invoke(frontierNodes.Count, exploredNodes.Count, resultPath.Count, "Bắt đầu tìm đường");
 
         if (monster == player)
@@ -253,6 +253,20 @@ public class AStarPathfinding : MonoBehaviour
         {
             if (node != null)
                 node.ResetVisual();
+        }
+    }
+
+    void ResetNodeData()
+    {
+        foreach (var node in gridManager.grid)
+        {
+            if (node != null)
+            {
+                node.gCost = 0f;
+                node.hCost = 0f;
+                node.parent = null;
+                node.ResetVisual();
+            }
         }
     }
 }

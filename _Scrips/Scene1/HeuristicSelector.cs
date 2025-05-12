@@ -34,13 +34,22 @@ public class HeuristicSelector : MonoBehaviour
     private void Start()
     {
         if (euclideanButton != null)
+        {
             euclideanButton.onClick.AddListener(() => ChangeHeuristic(HeuristicType.Euclidean));
+            //pathfinding.CleanupPathEffects();
+        }
 
         if (manhattanButton != null)
+        {
             manhattanButton.onClick.AddListener(() => ChangeHeuristic(HeuristicType.Manhattan));
+            //pathfinding.CleanupPathEffects();
+        }
 
         if (diagonalButton != null)
+        {
             diagonalButton.onClick.AddListener(() => ChangeHeuristic(HeuristicType.Diagonal));
+            //pathfinding.CleanupPathEffects();
+        }
 
         UpdateHeuristicText();
     }
@@ -51,7 +60,10 @@ public class HeuristicSelector : MonoBehaviour
         UpdateHeuristicText();
 
         if (pathfinding != null)
+        {
+            pathfinding.CleanupPathEffects();
             pathfinding.UpdatePath();
+        }
     }
 
     private void UpdateHeuristicText()
@@ -62,7 +74,6 @@ public class HeuristicSelector : MonoBehaviour
         }
     }
 
-    // Method được gọi từ AStarPathfinding để tính hCost dựa trên heuristic hiện tại
     public float CalculateHCost(Vector3 start, Vector3 end)
     {
         switch (currentHeuristic)
