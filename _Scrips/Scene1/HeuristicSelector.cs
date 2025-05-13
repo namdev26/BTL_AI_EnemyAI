@@ -36,19 +36,16 @@ public class HeuristicSelector : MonoBehaviour
         if (euclideanButton != null)
         {
             euclideanButton.onClick.AddListener(() => ChangeHeuristic(HeuristicType.Euclidean));
-            //pathfinding.CleanupPathEffects();
         }
 
         if (manhattanButton != null)
         {
             manhattanButton.onClick.AddListener(() => ChangeHeuristic(HeuristicType.Manhattan));
-            //pathfinding.CleanupPathEffects();
         }
 
         if (diagonalButton != null)
         {
             diagonalButton.onClick.AddListener(() => ChangeHeuristic(HeuristicType.Diagonal));
-            //pathfinding.CleanupPathEffects();
         }
 
         UpdateHeuristicText();
@@ -93,7 +90,7 @@ public class HeuristicSelector : MonoBehaviour
 
             default:
                 Debug.Log("Lỗi");
-                return 1;
+                return -1;
         }
     }
 }

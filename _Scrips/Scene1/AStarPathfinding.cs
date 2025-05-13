@@ -269,4 +269,34 @@ public class AStarPathfinding : MonoBehaviour
             }
         }
     }
+
+    // Phương thức này gọi tới GridManager để tạo vật cản mới
+    public void CreateNewRandomObstacles()
+    {
+        StopAllCoroutines();
+        CleanupPathEffects();
+        ResetGridVisuals();
+
+        if (gridManager != null && gridManager.ObstacleGenerator != null)
+        {
+            // Đăng ký sự kiện để lắng nghe khi nào tạo vật cản xong
+            gridManager.ObstacleGenerator.OnObstaclesGenerated += OnObstaclesGenerated;
+
+            // Tạo vật cản mới
+            gridManager.GenerateRandomObstacles();
+        }
+    }
+
+    // Phương thức được gọi khi vật cản đã được tạo xong
+    private void OnObstaclesGenerated()
+    {
+        // Hủy đăng ký sự kiện
+        if (gridManager.ObstacleGenerator != null)
+        {
+            gridManager.ObstacleGenerator.OnObstaclesGenerated -= OnObstaclesGenerated;
+        }
+
+        // Tính toán lại đường đi
+        StartCoroutine(RecalculatePath());
+    }
 }
