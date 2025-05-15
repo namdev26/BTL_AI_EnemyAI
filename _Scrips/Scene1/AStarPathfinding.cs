@@ -27,9 +27,8 @@ public class AStarPathfinding : MonoBehaviour
     public List<Node> frontierNodes = new List<Node>();
     public List<Node> exploredNodes = new List<Node>();
 
-    // Sự kiện để thông báo trạng thái và lỗi
-    public event Action<int, int, int, string> OnStateUpdated; // frontier, explored, path, status
-    public event Action<long> OnPathFound; // thời gian thực hiện
+    public event Action<int, int, int, string> OnStateUpdated;
+    public event Action<long> OnPathFound;
     public event Action<string> OnError;
 
     private void Awake()
@@ -69,11 +68,6 @@ public class AStarPathfinding : MonoBehaviour
         player = GetNodeFromWorldPos(playerGameObject.transform.position);
         monster = GetNodeFromWorldPos(monsterGameObject.transform.position);
 
-        if (player == null || monster == null)
-        {
-            OnError?.Invoke("Player hoặc Monster node là null. Kiểm tra vị trí hoặc GridManager.");
-            yield break;
-        }
         StartCoroutine(FindPathCoroutine());
     }
 
@@ -90,7 +84,6 @@ public class AStarPathfinding : MonoBehaviour
             }
             yield return new WaitForSeconds(0.05f);
         }
-
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(MoveMonster());
     }
@@ -102,8 +95,6 @@ public class AStarPathfinding : MonoBehaviour
             monsterGameObject.transform.position = node.transform.position;
             yield return new WaitForSeconds(0.2f);
         }
-
-        //CleanupPathEffects();
     }
 
     public void CleanupPathEffects()
@@ -117,11 +108,7 @@ public class AStarPathfinding : MonoBehaviour
     public IEnumerator FindPathCoroutine()
     {
         ResetNodeData();
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.Start();
-
         ResetGridVisuals();
-
         frontierNodes.Clear();
         exploredNodes.Clear();
         resultPath.Clear();
@@ -130,6 +117,9 @@ public class AStarPathfinding : MonoBehaviour
         monster.parent = null;
         currentNode = monster;
         frontierNodes.Add(monster);
+
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
 
         OnStateUpdated?.Invoke(frontierNodes.Count, exploredNodes.Count, resultPath.Count, "Bắt đầu tìm đường");
 
@@ -180,7 +170,10 @@ public class AStarPathfinding : MonoBehaviour
     {
         if (frontierNodes.Count <= 0) return null;
 
-        if (bestSpeed) return frontierNodes.OrderBy(node => node.hCost).First();
+        if (bestSpeed) return
+
+        frontierNodes.OrderBy(node => node.hCost).First();
+
         else
         {
             frontierNodes = frontierNodes.OrderBy(node => node.fCost).ToList();
@@ -255,7 +248,6 @@ public class AStarPathfinding : MonoBehaviour
                 node.ResetVisual();
         }
     }
-
     void ResetNodeData()
     {
         foreach (var node in gridManager.grid)
@@ -270,7 +262,6 @@ public class AStarPathfinding : MonoBehaviour
         }
     }
 
-    // Phương thức này gọi tới GridManager để tạo vật cản mới
     public void CreateNewRandomObstacles()
     {
         StopAllCoroutines();
@@ -279,24 +270,17 @@ public class AStarPathfinding : MonoBehaviour
 
         if (gridManager != null && gridManager.ObstacleGenerator != null)
         {
-            // Đăng ký sự kiện để lắng nghe khi nào tạo vật cản xong
             gridManager.ObstacleGenerator.OnObstaclesGenerated += OnObstaclesGenerated;
-
-            // Tạo vật cản mới
             gridManager.GenerateRandomObstacles();
         }
     }
 
-    // Phương thức được gọi khi vật cản đã được tạo xong
     private void OnObstaclesGenerated()
     {
-        // Hủy đăng ký sự kiện
         if (gridManager.ObstacleGenerator != null)
         {
             gridManager.ObstacleGenerator.OnObstaclesGenerated -= OnObstaclesGenerated;
         }
-
-        // Tính toán lại đường đi
         StartCoroutine(RecalculatePath());
     }
 }

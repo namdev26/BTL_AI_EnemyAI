@@ -50,7 +50,6 @@ public class HeuristicSelector : MonoBehaviour
 
         UpdateHeuristicText();
     }
-
     public void ChangeHeuristic(HeuristicType type)
     {
         currentHeuristic = type;

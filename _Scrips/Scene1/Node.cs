@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    [Header("A* Info")] public float gCost; public float hCost; public float fCost => gCost + hCost; public Node parent;
+    [Header("A* Info")]
+    public float gCost;
+    public float hCost;
+    public float fCost => gCost + hCost; public Node parent;
     [Header("Grid Info")]
     public int gridX;
     public int gridY;

@@ -6,7 +6,7 @@ public class ObstaclePlacer : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // Click trái
+        if (Input.GetMouseButtonDown(0)) 
         {
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             worldPos.z = 0;
@@ -15,7 +15,7 @@ public class ObstaclePlacer : MonoBehaviour
             if (node != null)
             {
                 node.isObstacle = !node.isObstacle;
-                node.UpdateVisual(); // Hàm này bạn dùng để đổi màu node
+                node.UpdateVisual();
             }
         }
     }

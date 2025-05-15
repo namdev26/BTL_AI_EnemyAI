@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodePrefab: {fileID: 1782922832318253330, guid: 37b6132dd03fa75449931da4764a3689, type: 3}
-  width: 10
-  height: 10
+  width: 50
+  height: 50
   spacing: 1.03
 --- !u!4 &95471921
 Transform:
@@ -183,8 +183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e66c61a1b26c5d4a87ac7ba7688eaab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstaclePercentage: 40
-  generateRandomObstacles: 0
+  obstaclePercentage: 20
+  generateRandomObstacles: 1
 --- !u!1 &159007337
 GameObject:
   m_ObjectHideFlags: 0
