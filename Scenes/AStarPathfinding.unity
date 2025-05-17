@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodePrefab: {fileID: 1782922832318253330, guid: 37b6132dd03fa75449931da4764a3689, type: 3}
-  width: 50
-  height: 50
+  width: 10
+  height: 10
   spacing: 1.03
 --- !u!4 &95471921
 Transform:
@@ -318,7 +318,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Result Path
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1894a4c9b067345aaec10109301326, type: 2}
   m_sharedMaterial: {fileID: 4343570273104159190, guid: 5c1894a4c9b067345aaec10109301326, type: 2}
@@ -573,7 +573,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 'Current '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1320,7 +1320,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Frontier Node
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1894a4c9b067345aaec10109301326, type: 2}
   m_sharedMaterial: {fileID: 4343570273104159190, guid: 5c1894a4c9b067345aaec10109301326, type: 2}
@@ -1650,7 +1650,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Explored Node
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1894a4c9b067345aaec10109301326, type: 2}
   m_sharedMaterial: {fileID: 4343570273104159190, guid: 5c1894a4c9b067345aaec10109301326, type: 2}
@@ -2283,7 +2283,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Execution Time
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1894a4c9b067345aaec10109301326, type: 2}
   m_sharedMaterial: {fileID: 4343570273104159190, guid: 5c1894a4c9b067345aaec10109301326, type: 2}

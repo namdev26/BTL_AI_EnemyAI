@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
         if (currentNode != lastNode)
         {
             lastNode = currentNode;
-            AStarPathfinding.Instance.UpdatePath(); // Gọi lại pathfinding
+            AStarPathfinding.Instance.UpdatePath();
         }
     }
 }

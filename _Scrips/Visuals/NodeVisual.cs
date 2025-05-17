@@ -11,13 +11,12 @@ public class NodeVisual : MonoBehaviour
         public float probability = 1f;
     }
 
-    [SerializeField] private SpriteRenderer backgroundRenderer; 
-    [SerializeField] private SpriteRenderer obstacleRenderer; 
-
-    [SerializeField] private List<SpriteEntry> grassSprites = new List<SpriteEntry>(); 
-    [SerializeField] private List<SpriteEntry> obstacleSprites = new List<SpriteEntry>(); 
-    [SerializeField] private List<SpriteEntry> frontierSprites = new List<SpriteEntry>(); 
-    [SerializeField] private List<SpriteEntry> exploredSprites = new List<SpriteEntry>(); 
+    [SerializeField] private SpriteRenderer backgroundRenderer;
+    [SerializeField] private SpriteRenderer obstacleRenderer;
+    [SerializeField] private List<SpriteEntry> grassSprites = new List<SpriteEntry>();
+    [SerializeField] private List<SpriteEntry> obstacleSprites = new List<SpriteEntry>();
+    [SerializeField] private List<SpriteEntry> frontierSprites = new List<SpriteEntry>();
+    [SerializeField] private List<SpriteEntry> exploredSprites = new List<SpriteEntry>();
 
     public void Init()
     {
@@ -37,7 +36,6 @@ public class NodeVisual : MonoBehaviour
             obstacleRenderer = overlayObj.AddComponent<SpriteRenderer>();
             obstacleRenderer.sortingOrder = 1;
         }
-
         SetOverlayVisible(false);
     }
 
@@ -75,16 +73,14 @@ public class NodeVisual : MonoBehaviour
             obstacleRenderer.enabled = true;
         }
     }
-
     public void SetAsFrontier()
     {
         if (obstacleRenderer != null && frontierSprites.Count > 0)
         {
             obstacleRenderer.sprite = GetRandomSpriteFromList(frontierSprites);
-            obstacleRenderer.enabled = true; 
+            obstacleRenderer.enabled = true;
         }
     }
-
     public void SetAsExplored()
     {
         if (obstacleRenderer != null && exploredSprites.Count > 0)
@@ -93,12 +89,10 @@ public class NodeVisual : MonoBehaviour
             obstacleRenderer.enabled = true;
         }
     }
-
     public void ResetVisual()
     {
         SetOverlayVisible(false);
     }
-
     private void SetOverlayVisible(bool isVisible)
     {
         if (obstacleRenderer != null)

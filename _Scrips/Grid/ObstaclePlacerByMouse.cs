@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ObstaclePlacer : MonoBehaviour
+public class ObstaclePlacerByMouse : MonoBehaviour
 {
     public GridManager gridManager;
 

@@ -5,15 +5,13 @@ using System.Linq;
 using UnityEngine;
 
 [DefaultExecutionOrder(-5)]
-public class ObstacleGenerator : MonoBehaviour
+public class ObstacleGeneratorRamdom : MonoBehaviour
 {
     [Header("Random Obstacles")]
     [Range(0, 50)]
-    public int obstaclePercentage = 20; 
-    public bool generateRandomObstacles = false; 
-
+    public int obstaclePercentage = 20;
+    public bool generateRandomObstacles = false;
     private GridManager gridManager;
-
     public event Action<string> OnError;
     public event Action OnObstaclesGenerated;
 
@@ -37,7 +35,6 @@ public class ObstacleGenerator : MonoBehaviour
             GenerateRandomObstacles();
         }
     }
-
     public void GenerateRandomObstacles()
     {
         if (gridManager.grid == null || gridManager.grid.Length == 0)

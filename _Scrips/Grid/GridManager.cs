@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [DefaultExecutionOrder(-10)]
 public class GridManager : MonoBehaviour
@@ -10,31 +9,25 @@ public class GridManager : MonoBehaviour
     public float spacing = 1f;
     public Node[,] grid;
 
-    // Tham chiếu đến ObstacleGenerator
-    private ObstacleGenerator obstacleGenerator;
-    public ObstacleGenerator ObstacleGenerator => obstacleGenerator;
+    private ObstacleGeneratorRamdom obstacleGenerator;
+    public ObstacleGeneratorRamdom ObstacleGenerator => obstacleGenerator;
 
     private void Awake()
     {
-        // Kiểm tra nếu đã có ObstacleGenerator
-        obstacleGenerator = GetComponent<ObstacleGenerator>();
+        obstacleGenerator = GetComponent<ObstacleGeneratorRamdom>();
 
-        // Nếu chưa có, tạo mới
         if (obstacleGenerator == null)
         {
-            obstacleGenerator = gameObject.AddComponent<ObstacleGenerator>();
+            obstacleGenerator = gameObject.AddComponent<ObstacleGeneratorRamdom>();
         }
     }
 
     void Start()
     {
-        GenerateGrid(); // khởi tạo grid
-        AssignNeighbors(); // tìm các node lân cận
+        GenerateGrid(); 
+        AssignNeighbors(); 
         CenterCameraOnGrid();
     }
-
-    // Đồng bộ các thông số từ GridManager sang ObstacleGenerator
-
 
     void GenerateGrid()
     {
@@ -56,7 +49,6 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    // Phương thức này được public để có thể gọi lại sau khi tạo obstacle
     public void AssignNeighbors()
     {
         for (int x = 0; x < width; x++)
@@ -65,10 +57,10 @@ public class GridManager : MonoBehaviour
             {
                 Node node = grid[x, y];
                 node.neighbors.Clear();
-                TryAddNeighbor(node, x - 1, y); // Trái
-                TryAddNeighbor(node, x + 1, y); // Phải
-                TryAddNeighbor(node, x, y + 1); // Trên
-                TryAddNeighbor(node, x, y - 1); // Dưới
+                TryAddNeighbor(node, x - 1, y); 
+                TryAddNeighbor(node, x + 1, y); 
+                TryAddNeighbor(node, x, y + 1); 
+                TryAddNeighbor(node, x, y - 1); 
             }
         }
     }
@@ -101,7 +93,6 @@ public class GridManager : MonoBehaviour
         cam.orthographicSize = Mathf.Max(sizeX, sizeY) + 0.5f;
     }
 
-    // Phương thức public để tạo vật cản từ bên ngoài
     public void GenerateRandomObstacles()
     {
         if (obstacleGenerator != null)

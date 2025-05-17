@@ -35,7 +35,6 @@ public class AStarPathfinding : MonoBehaviour
     {
         Instance = this;
     }
-
     private void Start()
     {
         StartCoroutine(WaitUntilGridIsReady());
@@ -87,7 +86,6 @@ public class AStarPathfinding : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(MoveMonster());
     }
-
     IEnumerator MoveMonster()
     {
         foreach (Node node in resultPath)
